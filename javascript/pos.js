@@ -15,35 +15,7 @@
         .then(data => {
             // Loop through fetched data and create product items dynamically
             data.forEach(product => {
-                // Create product item container
-                const productItem = document.createElement('div');
-                productItem.classList.add('product-item');
-                productItem.dataset.productId = product.id;
-
-                // Create and append product image
-                const productImage = document.createElement('img');
-                productImage.src = product.image;
-                productImage.alt = product.title;
-                productImage.classList.add('product-img');
-                productItem.appendChild(productImage);
-
-                // Create and append product title
-                const productTitle = document.createElement('span');
-                productTitle.textContent = product.title;
-                productTitle.classList.add('product-title');
-                productItem.appendChild(productTitle);
-
-                // Create and append product price
-                const productPrice = document.createElement('span');
-                productPrice.textContent = `$${product.price}`;
-                productPrice.classList.add('product-price');
-                productItem.appendChild(productPrice);
-
-                // Add item to cart on click
-                productItem.addEventListener('click', () => {
-                    addProductToCart(product);
-                });
-
+                const productItem = createProductItem(product);
                 productList.appendChild(productItem);
             });
         })
@@ -52,6 +24,34 @@
         });
 });
 
+function createProductItem(product) {
+    const productItem = document.createElement('div');
+    productItem.classList.add('product-item');
+    productItem.dataset.productId = product.id;
+
+    const productImage = document.createElement('img');
+    productImage.src = product.image;
+    productImage.alt = product.title;
+    productImage.classList.add('product-img');
+    productItem.appendChild(productImage);
+
+    const productTitle = document.createElement('span');
+    productTitle.textContent = product.title;
+    productTitle.classList.add('product-title');
+    productItem.appendChild(productTitle);
+
+    const productPrice = document.createElement('span');
+    productPrice.textContent = `$${product.price}`;
+    productPrice.classList.add('product-price');
+    productItem.appendChild(productPrice);
+
+    productItem.addEventListener('click', () => {
+        addProductToCart(product);
+    });
+
+    return productItem;
+}
+
 // Add clicked product to the cart
 function addProductToCart(product) {
     const existingCartItem = Array.from(cartItems.children).find(item => item.dataset.productId === product.id.toString());
@@ -59,7 +59,16 @@ function addProductToCart(product) {
     if (existingCartItem) {
         // If the product is already in the cart, increase its quantity
         const quantityInput = existingCartItem.querySelector('input');
-        quantityInput.value = parseInt(quantityInput.value) + 1;
+        const priceElement = existingCartItem.querySelector('.product-price')
+        const price = parseFloat(priceElement.textContent.replace('$', ''));
+
+        const newQuantity = parseInt(quantityInput.value) + 1;
+        quantityInput.value = newQuantity;
+
+        //now increasing price relative to quantity
+        const newPrice = price * newQuantity;
+        priceElement.textContent = `$${newPrice.toFixed(2)}`//this displays the updated price
+
         updateCartTotal();
     } else {
         // If product is not in the cart, create a new cart item
