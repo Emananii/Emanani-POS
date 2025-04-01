@@ -98,9 +98,29 @@ function createCartItem(product) {
     price.classList.add('cart-item-price'); //added this for selector purposes
     price.textContent = `$${(product.price * parseInt(quantityInput.value)).toFixed(2)}`;
 
+    //adding a remove button
+    const removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove';
+    removeButton.classList.add('remove-item');
+    removeButton.addEventListener('click', () => removeItemFromCart(cartItem, product.id));
+
+    //Create the quantity adjustment buttons
+    const increaseButton = document.createElement('button');
+    increaseButton.textContent = '+';
+    increaseButton.classList.add('adjust-quantity');
+    increaseButton.addEventListener('click', () => adjustQuantity(cartItem, 1));
+
+    const decreaseButton = document.createElement('button');
+    decreaseButton.textContent = '-';
+    decreaseButton.classList.add('adjust-quantity');
+    decreaseButton.addEventListener('click', () => adjustQuantity(cartItem, -1));
+    
     cartItem.appendChild(title);
     cartItem.appendChild(quantityInput);
     cartItem.appendChild(price);
+    cartItem.appendChild(removeButton);
+    cartItem.appendChild(increaseButton);
+    cartItem.appendChild(decreaseButton);
 
       // Added logging to verify price creation
     console.log('Created cart item with price:', price.textContent);
