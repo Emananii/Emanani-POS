@@ -55,6 +55,7 @@ function createProductItem(product) {
 
 // Add clicked product to the cart
 function addProductToCart(product) {
+    console.log(product);
     const existingCartItem = Array.from(cartItems.children).find(item => item.dataset.productId === product.id.toString());
 
     if (existingCartItem) {
@@ -72,6 +73,7 @@ function addProductToCart(product) {
 
         updateCartTotal();
     } else {
+        //create a new cart item if its not in the cart
         const cartItem = createCartItem(product);
         cartItems.appendChild(cartItem);
         updateCartTotal();
@@ -93,12 +95,15 @@ function createCartItem(product) {
     quantityInput.addEventListener('input', updateCartTotal);
 
     const price = document.createElement('span');
-    price.classList.add('cart-item-price'); //adding this for selector purposes
+    price.classList.add('cart-item-price'); //added this for selector purposes
     price.textContent = `$${(product.price * parseInt(quantityInput.value)).toFixed(2)}`;
 
     cartItem.appendChild(title);
     cartItem.appendChild(quantityInput);
     cartItem.appendChild(price);
+
+      // Added logging to verify price creation
+    console.log('Created cart item with price:', price.textContent);
 
     return cartItem;
 }
@@ -112,6 +117,12 @@ function updateCartTotal() {
     Array.from(cartItems.children).forEach(item => {
         const quantityInput = item.querySelector('input');
         const priceElement = item.querySelector('.cart-item-price');  // Target price more specifically
+        
+        if (!priceElement) {
+            console.warn('Price element not found for:', item);
+            return;  // Skip this iteration if price is missing
+        }
+        
         const price = parseFloat(priceElement.textContent.replace('$', ''));
         const quantity = parseInt(quantityInput.value); // Get quantity
 
