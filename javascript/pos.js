@@ -62,13 +62,13 @@ function addProductToCart(product) {
         // If the product is already in the cart, increase its quantity
         const quantityInput = existingCartItem.querySelector('input');
         const priceElement = existingCartItem.querySelector('.cart-item-price')
-        const price = parseFloat(priceElement.textContent.replace('$', ''));
+        const unitPrice = parseFloat(priceElement.dataset.unitPrice); // Get the unit price from the data attribute
 
         const newQuantity = parseInt(quantityInput.value) + 1;
         quantityInput.value = newQuantity;
 
         //now increasing price relative to quantity
-        const newPrice = price * newQuantity;
+        const newPrice = unitPrice * newQuantity;
         priceElement.textContent = `$${newPrice.toFixed(2)}`//this displays the updated price
 
         updateCartTotal();
@@ -94,9 +94,12 @@ function createCartItem(product) {
     quantityInput.min = 1;
     quantityInput.addEventListener('input', updateCartTotal);
 
+    // The price should be based on the unit price (not multiplied by quantity)
     const price = document.createElement('span');
     price.classList.add('cart-item-price'); //added this for selector purposes
-    price.textContent = `$${(product.price * parseInt(quantityInput.value)).toFixed(2)}`;
+    const unitPrice = product.price; // This is the price per item
+    price.textContent = `$${unitPrice.toFixed(2)}`; // Show price for one item
+    price.dataset.unitPrice = unitPrice; // Store unit price as a data attribute
 
     //adding a remove button
     const removeButton = document.createElement('button');
