@@ -128,6 +128,31 @@ function createCartItem(product) {
     return cartItem;
 }
 
+// Remove an item from the cart
+function removeItemFromCart(cartItem, productId) {
+    cartItem.remove();  // Remove the cart item element from the DOM
+    updateCartTotal();  // Update the total price after removal
+    console.log(`Removed product with ID ${productId} from the cart`);
+}
+
+// Adjust the quantity of an item (either +1 or -1)
+function adjustQuantity(cartItem, adjustment) {
+    const quantityInput = cartItem.querySelector('input');
+    const priceElement = cartItem.querySelector('.cart-item-price');
+    
+    let newQuantity = parseInt(quantityInput.value) + adjustment;
+    
+    // Ensure quantity does not go below 1
+    if (newQuantity < 1) return;
+
+    // Update the quantity and price
+    quantityInput.value = newQuantity;
+    const price = parseFloat(priceElement.textContent.replace('$', '')) / (newQuantity - adjustment);  // Calculate price per item
+    const newPrice = price * newQuantity;
+    priceElement.textContent = `$${newPrice.toFixed(2)}`; // Update the price display
+
+    updateCartTotal(); // Recalculate total price
+}
 
 // Update the total price in the cart
 function updateCartTotal() {
