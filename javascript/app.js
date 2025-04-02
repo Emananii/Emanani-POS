@@ -17,7 +17,7 @@ navigation.addEventListener('change', function () {
     //If else statements to decide which sections get displayed
     if (selectedPage === 'inventory') {
         inventory.style.display = 'block';
-        loadInventory(); // Call inventory function
+        renderInventory(); // Call inventory function
     } else if (selectedPage === 'sales') {
         sales.style.display = 'block';
         loadSales(); // Call sales function

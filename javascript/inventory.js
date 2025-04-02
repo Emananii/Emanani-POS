@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('inventory-search');
     const navigation = document.getElementById('navigation');
 
-    let inventory = [];
+    let inventory = []; //for storing searched products
 
     // 🔹 Show Inventory Page When Selected
     navigation.addEventListener('change', () => {
