@@ -2,6 +2,9 @@
     const productList = document.getElementById('scrollable-products');
     const cartItems = document.getElementById('cart-items');  //Made cartItems a global variable
     const totalPriceElement = document.getElementById('total-price');
+    const searchInput = document.querySelector("#product-search input");
+
+    let searchedProducts = [];//for storing searched products
 
     document.addEventListener('DOMContentLoaded', () => {
     // Fetching products from Fake Store API
@@ -13,7 +16,9 @@
             return response.json();
         })
         .then(data => {
-            // Loop through fetched data and create product items dynamically
+            searchedProducts = data; //start the searched products with the entire product list
+            
+            // Looping through the fetched data and creating product items dynamically
             data.forEach(product => {
                 const productItem = createProductItem(product);
                 productList.appendChild(productItem);
@@ -64,7 +69,7 @@ function addProductToCart(product) {
         const priceElement = existingCartItem.querySelector('.cart-item-price')
         const unitPrice = parseFloat(priceElement.dataset.unitPrice); /* Get the unit price from
                                                                          the data attribute we used
-                                                                         in createCartItem*/
+                                                                         in createCartItem */
 
         const newQuantity = parseInt(quantityInput.value) + 1;
         quantityInput.value = newQuantity;
@@ -207,6 +212,23 @@ function processPayment(method) {
 
 // Reset cart after payment
 function resetCart() {
-    cartItems.innerHTML = '';  // Directly reference cartItems
+    cartItems.innerHTML = '';  // return innerText to an empty string
     updateCartTotal();
 }
+
+function renderProducts(products) {
+    productList.innerHTML = ''; // Clear the current list
+    products.forEach(product => {
+        const productItem = createProductItem(product);
+        productList.appendChild(productItem);
+    });
+}
+
+//adding search functionality
+searchInput.addEventListener('input', () => {
+    const searchText = searchInput.value.toLowerCase();
+    const filteredProducts = searchedProducts.filter(product => 
+        product.title.toLowerCase().includes(searchText)
+    );
+    renderProducts(filteredProducts); // Use existing function
+});
