@@ -151,6 +151,11 @@ function removeItemFromCart(cartItem, productId) {
     cartItem.remove();  // Remove the cart item element from the DOM
     updateCartTotal();  // Must Update the total price after removal
     console.log(`Removed product with ID ${productId} from the cart`);//confirm function working as expected
+
+    if (cartItems.children.length === 0) {
+        emptyCartMessage.style.display = 'block';
+    }
+
 }
 
 // Adjust the quantity of an item by either +1 or -1
@@ -176,21 +181,25 @@ function adjustQuantity(cartItem, adjustment) {
 function updateCartTotal() {
     let total = 0;
 
-    // Loop through each cart item to calculate the total price
+    // Looping through each cart item to calculate the total price
     Array.from(cartItems.children).forEach(item => {
+        if (item.classList.contains('empty-cart-message')) return;//skip checking this part
+        console.log(item);//checking the structure of the cart item
         const quantityInput = item.querySelector('input');
-        const priceElement = item.querySelector('.cart-item-price');  // Target price more specifically
+        const priceElement = item.querySelector('.cart-item-price');
         
         if (!priceElement) {
             console.warn('Price element not found for:', item);
             return;  // Skip this iteration if price is missing
         }
-        
-        const price = parseFloat(priceElement.textContent.replace('$', ''));
+
+        const unitPrice = parseFloat(priceElement.dataset.unitPrice);
         const quantity = parseInt(quantityInput.value); // Get quantity
 
         // Multiply price by quantity to get total for this item
-        total += price * quantity;
+        console.log(`Unit Price is: ${unitPrice} and quantity is ${quantity}`)
+        total += unitPrice * quantity;
+        console.log(`Total is: ${total}`);
     });
 
     // Display the total price in the cart
