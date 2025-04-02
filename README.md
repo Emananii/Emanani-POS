@@ -9,27 +9,29 @@ This is a simple Point of Sale (POS) system built using JavaScript. It allows us
 
 # Features
 
-Product Listing: Fetches and displays products dynamically from an API.
+1. Product Listing: Fetches and displays products dynamically from an API.
 
-Cart Functionality: Add, remove, and adjust quantities of products in the cart.
+2. Cart Functionality: Add, remove, and adjust quantities of products in the cart.
 
-Total Price Calculation: Automatically updates the total price based on quantity adjustments.
+3. Total Price Calculation: Automatically updates the total price based on quantity adjustments.
 
-Payment Processing: Simulated payment via Cash, Mpesa, or Bank.
+4. Payment Processing: Simulated payment via Cash, Mpesa, or Bank buttons.
 
-User-Friendly UI: Interactive and intuitive shopping experience.
+5. User-Friendly UI: Interactive and intuitive shopping experience.
 
 
 # Future Improvements
 
-Implement a real backend for processing transactions.
+1. Implement a real backend for processing transactions.
 
-Add user authentication and order history.
+2. User authentication and order history.
 
-Improve the UI with animations and enhanced styling.
+3. Improved UI with animations and enhanced styling.
 
-Add barcode scanning support for easier product selection.
+4. Added barcode scanning support for easier product selection.
 
-Add accounting and sales tracking features.
+5. Added accounting and sales tracking features.
 
-Improved and extended inventory management features.
+6. Improved and extended inventory management features.
+
+7. Users will be able to filter products based on categories
