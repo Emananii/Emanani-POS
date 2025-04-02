@@ -3,6 +3,8 @@
 
 # Overview
 
+Live view: https://dancing-quokka-e3b4b3.netlify.app/
+
 This is a simple Point of Sale (POS) system built using JavaScript. It allows users to browse products, add them to a cart, adjust quantities, and process payments. The system fetches products from the Fake Store API and dynamically generates the product list. Users can manage their shopping cart and finalize their purchase using different payment methods.
 
 # Features
