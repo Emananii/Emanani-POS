@@ -27,3 +27,7 @@ Add user authentication and order history.
 Improve the UI with animations and enhanced styling.
 
 Add barcode scanning support for easier product selection.
+
+Add accounting and sales tracking features.
+
+Improved and extended inventory management features.

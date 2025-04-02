@@ -1,6 +1,6 @@
 
     const productList = document.getElementById('scrollable-products');
-    const cartItems = document.getElementById('cart-items');  // Define cartItems once
+    const cartItems = document.getElementById('cart-items');  //Made cartItems a global variable
     const totalPriceElement = document.getElementById('total-price');
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -62,7 +62,9 @@ function addProductToCart(product) {
         // If the product is already in the cart, increase its quantity
         const quantityInput = existingCartItem.querySelector('input');
         const priceElement = existingCartItem.querySelector('.cart-item-price')
-        const unitPrice = parseFloat(priceElement.dataset.unitPrice); // Get the unit price from the data attribute
+        const unitPrice = parseFloat(priceElement.dataset.unitPrice); /* Get the unit price from
+                                                                         the data attribute we used
+                                                                         in createCartItem*/
 
         const newQuantity = parseInt(quantityInput.value) + 1;
         quantityInput.value = newQuantity;
@@ -79,7 +81,7 @@ function addProductToCart(product) {
         updateCartTotal();
     }
 }
-
+//made createCartItem function for separation of concern purposes
 function createCartItem(product) {
     const cartItem = document.createElement('div');
     cartItem.classList.add('cart-item');
@@ -94,12 +96,14 @@ function createCartItem(product) {
     quantityInput.min = 1;
     quantityInput.addEventListener('input', updateCartTotal);
 
-    // The price should be based on the unit price (not multiplied by quantity)
     const price = document.createElement('span');
     price.classList.add('cart-item-price'); //added this for selector purposes
     const unitPrice = product.price; // This is the price per item
     price.textContent = `$${unitPrice.toFixed(2)}`; // Show price for one item
-    price.dataset.unitPrice = unitPrice; // Store unit price as a data attribute
+    price.dataset.unitPrice = unitPrice; /* Storing unit price with the dataset property
+                                            so that price remains constant even
+                                            when increasing quantity. With this, the price rises
+                                            linearly rather than exponentially*/
 
     //adding a remove button
     const removeButton = document.createElement('button');
@@ -134,18 +138,18 @@ function createCartItem(product) {
 // Remove an item from the cart
 function removeItemFromCart(cartItem, productId) {
     cartItem.remove();  // Remove the cart item element from the DOM
-    updateCartTotal();  // Update the total price after removal
-    console.log(`Removed product with ID ${productId} from the cart`);
+    updateCartTotal();  // Must Update the total price after removal
+    console.log(`Removed product with ID ${productId} from the cart`);//confirm function working as expected
 }
 
-// Adjust the quantity of an item (either +1 or -1)
+// Adjust the quantity of an item by either +1 or -1
 function adjustQuantity(cartItem, adjustment) {
     const quantityInput = cartItem.querySelector('input');
     const priceElement = cartItem.querySelector('.cart-item-price');
     
     let newQuantity = parseInt(quantityInput.value) + adjustment;
     
-    // Ensure quantity does not go below 1
+    // Quantity must not go below 1
     if (newQuantity < 1) return;
 
     // Update the quantity and price
@@ -154,7 +158,7 @@ function adjustQuantity(cartItem, adjustment) {
     const newPrice = price * newQuantity;
     priceElement.textContent = `$${newPrice.toFixed(2)}`; // Update the price display
 
-    updateCartTotal(); // Recalculate total price
+    updateCartTotal(); // Recalculate total price after price adjustment
 }
 
 // Update the total price in the cart
@@ -187,7 +191,7 @@ document.getElementById('cash').addEventListener('click', () => processPayment('
 document.getElementById('mpesa').addEventListener('click', () => processPayment('Mpesa'));
 document.getElementById('bank').addEventListener('click', () => processPayment('Bank'));
 
-// Handle the payment processing (this can be enhanced to store or process payment data)
+// Handle the payment processing (will enhance this in the future to store and process payment data)
 function processPayment(method) {
     const totalAmount = parseFloat(totalPriceElement.textContent);
     
