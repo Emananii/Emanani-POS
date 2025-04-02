@@ -3,6 +3,7 @@
     const cartItems = document.getElementById('cart-items');  //Made cartItems a global variable
     const totalPriceElement = document.getElementById('total-price');
     const searchInput = document.querySelector("#product-search input");
+    const emptyCartMessage = document.querySelector('.empty-cart-message');
 
     let searchedProducts = [];//for storing searched products
 
@@ -84,6 +85,11 @@ function addProductToCart(product) {
         const cartItem = createCartItem(product);
         cartItems.appendChild(cartItem);
         updateCartTotal();
+    }
+
+    //hides the empty cart item DOM elements
+    if (cartItems.children.length > 0) {
+        emptyCartMessage.style.display = 'none';
     }
 }
 //made createCartItem function for separation of concern purposes
